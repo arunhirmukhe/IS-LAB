@@ -1,4 +1,3 @@
-package SymmetricKey;
 import java.security.SecureRandom;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -15,22 +14,24 @@ public class DES {
     StringBuffer sb = new StringBuffer();
 
     Scanner sc = new Scanner(System.in);
+
     public DES() {
         try {
 
             generateSymmetricKey();
-            
+
             System.out.print("Enter message to encrypt: ");
-            
+
             sb.append(sc.nextLine());
-            
+
             inputMessage = sb.toString();
-            
+
             byte[] ibyte = inputMessage.getBytes();
+           
             byte[] ebyte = encrypt(raw, ibyte);
             String encryptedData = new String(ebyte);
             System.out.println("Encrypted message: " + encryptedData);
-            
+
             byte[] dbyte = decrypt(raw, ebyte);
             String decryptedMessage = new String(dbyte);
             System.out.println("Decrypted message: " + decryptedMessage);
@@ -64,18 +65,15 @@ public class DES {
     }
 
     private static byte[] encrypt(byte[] raw, byte[] clear) throws Exception {
-        SecretKeySpec skeySpec = new SecretKeySpec(raw,
-                "DES");
+        SecretKeySpec skeySpec = new SecretKeySpec(raw, "DES");
         Cipher cipher = Cipher.getInstance("DES");
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
         byte[] encrypted = cipher.doFinal(clear);
         return encrypted;
     }
 
-    private static byte[] decrypt(byte[] raw, byte[] encrypted)
-            throws Exception {
-        SecretKeySpec skeySpec = new SecretKeySpec(raw,
-                "DES");
+    private static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
+        SecretKeySpec skeySpec = new SecretKeySpec(raw,"DES");
         Cipher cipher = Cipher.getInstance("DES");
         cipher.init(Cipher.DECRYPT_MODE, skeySpec);
         byte[] decrypted = cipher.doFinal(encrypted);
