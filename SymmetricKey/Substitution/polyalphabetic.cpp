@@ -1,42 +1,34 @@
 #include <iostream>
 #include <string>
-#include <algorithm>
+
 using namespace std;
 
-int main() {
-    string msg, key, k, ct, pt;
-    int lenm, lenk, i, j=0;
-    cout << "Enter Message : ";
-    getline(cin, msg);
-    transform(msg.begin(), msg.end(), msg.begin(), ::toupper);
-    cout << "Enter Key : ";
-    getline(cin, key);
-    transform(key.begin(), key.end(), key.begin(), ::toupper);
-    lenm = msg.length();
-    lenk = key.length();
-
-    //loop for iterating the key to length of the message
-    for (i=0; i<lenm; i++,j++) {
-        if (j == lenk) {
-            j = 0;
+string polyalphabetic_cipher(string text, string key, bool encrypt) {
+    string result = "";
+    int key_index = 0;
+    int sign = encrypt ? 1 : -1;
+    for (char c : text) {
+        if (isalpha(c)) {
+            char base = isupper(c) ? 'A' : 'a';
+            char shift = tolower(key[key_index]) - 'a';
+            char new_char = ((c - base + sign * shift + 26) % 26) + base;
+            result += new_char;
+            key_index = (key_index + 1) % key.length();
+        } else {
+            result += c;
         }
-        k += key[j];
     }
-    
+    return result;
+}
 
-    //loop for generating the cipher text by calculating ct of 1 character and appending it to ct
-    for (i=0; i<lenm; i++) { 
-        ct += ((msg[i]+k[i])%26)+'A';
-    }
-
-    //loop to generate plaintext
-    for (i=0; i<lenm; i++) {
-        pt += (((ct[i]-k[i])+26)%26)+'A';
-    }
-    
-    //transform(ct.begin(), ct.end(), ct.begin(), ::tolower);
-    //transform(pt.begin(), pt.end(), pt.begin(), ::tolower);
-    cout << "\nEncrypted Message : " << ct;
-    cout << "\nDecrypted Message : " << pt;
+int main() {
+    string plaintext = "Hello, world!";
+    string key = "secret";
+    string ciphertext = polyalphabetic_cipher(plaintext, key, true);
+    string decrypted_text = polyalphabetic_cipher(ciphertext, key, false);
+    cout << "Plaintext: " << plaintext << endl;
+    cout << "Key: " << key << endl;
+    cout << "Ciphertext: " << ciphertext << endl;
+    cout << "Decrypted text: " << decrypted_text << endl;
     return 0;
 }
