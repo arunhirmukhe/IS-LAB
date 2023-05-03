@@ -1,11 +1,8 @@
-package SymmetricKey;
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import java.util.Base64;
-import java.util.Scanner;
 
 public class AES {
     private SecretKey key;
@@ -48,12 +45,7 @@ public class AES {
         try {
             AES aes_encryption = new AES();
             aes_encryption.init();
-
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Enter the plain text: ");
-            String plainText = scanner.nextLine();
-
-            String encryptedData = aes_encryption.encrypt(plainText);
+            String encryptedData = aes_encryption.encrypt("Hello, welcome to the encryption world");
             String decryptedData = aes_encryption.decrypt(encryptedData);
 
             System.out.println("Encrypted Data : " + encryptedData);
